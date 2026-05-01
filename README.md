@@ -1,53 +1,58 @@
-# Arogya Nidhi - Healthcare Eligibility Checker
+# ArogyaNidhi
 
-Arogya Nidhi is a comprehensive Android application designed to help users check their eligibility for various government healthcare schemes in India.
+ArogyaNidhi is a healthcare Android app designed to simplify health management. It helps users manage health records, track appointments, monitor child growth, and access essential healthcare services in one place.
 
 ## Features
 
-- **Authentication**: Secure email and password login using Firebase Authentication.
-- **User Profile**: Store and manage user profiles (name, age, income, district, etc.) in Firebase Firestore.
-- **Onboarding**: Informative screens to guide new users through the app's purpose.
-- **Eligibility Checker**: A multi-step form that uses decision tree logic to determine eligible schemes based on user input.
-- **Schemes Module**: Detailed list of government schemes with information on benefits and application processes.
-- **Document Guide**: Track required documents for each scheme, saved locally for offline access using Room.
-- **Hospital Finder**: Find nearby government and private hospitals filtered by district.
-- **Modern UI/UX**: Built with Jetpack Compose and Material 3, supporting light and dark modes.
+- User authentication and profile management  
+- Health record storage and tracking  
+- Appointment scheduling and reminders  
+- Child growth monitoring  
+- Clean and responsive UI  
+- Fast and reliable performance  
 
 ## Tech Stack
 
-- **Language**: Kotlin
-- **UI Framework**: Jetpack Compose
-- **Architecture**: MVVM with Repository Pattern
-- **Dependency Injection**: Hilt
-- **Backend**: Firebase (Auth, Firestore, Storage)
-- **Local Database**: Room (for document tracking)
-- **Preferences**: Jetpack DataStore
-- **Navigation**: Compose Navigation (Type-Safe)
+- Java or Kotlin  
+- Android SDK  
+- XML for UI design  
 
-## Setup Instructions
+## Installation
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/example/arogyanidhi.git
-   ```
-2. **Firebase Setup**:
-   - Create a new project on the [Firebase Console](https://console.firebase.google.com/).
-   - Add an Android app with package name `com.example.arogyanidhi`.
-   - Download the `google-services.json` file and place it in the `app/` directory.
-   - Enable **Email/Password** authentication in the Firebase Console.
-   - Enable **Firestore Database** and **Firebase Storage**.
-3. **Build and Run**:
-   - Open the project in Android Studio (Ladybug or newer).
-   - Sync Gradle files.
-   - Run the app on an emulator or physical device.
+1. Clone the repository  
+git clone https://github.com/malikarshid01430-byte/ArogyaNidhi.git  
+
+2. Open in Android Studio  
+
+3. Sync Gradle and run the project  
+
+## Usage
+
+- Sign up or log in  
+- Add and manage health records  
+- Schedule and track appointments  
+- Monitor growth data  
 
 ## Project Structure
 
-- `data/`: Contains repository implementations, local database (Room), and preference management.
-- `domain/`: Contains domain models and repository interfaces.
-- `ui/`: Contains Compose screens, ViewModels, and navigation logic.
-- `di/`: Hilt modules for dependency injection.
+- activities: UI screens  
+- adapters: RecyclerView adapters  
+- models: Data models  
+- utils: Helper classes  
+- res: Layouts, drawables, and resources  
+
+## Contributing
+
+1. Fork the repository  
+2. Create a new branch  
+3. Make changes  
+4. Submit a pull request  
 
 ## License
 
-This project is licensed under the MIT License.
+This project is for educational and personal use.
+
+## Author
+
+Arshid Ahmad Malik
+```
