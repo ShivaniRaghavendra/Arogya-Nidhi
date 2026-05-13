@@ -118,12 +118,6 @@ This project is for educational and personal use
 
 ---
 
-## 👨‍💻 Author
-
-Developed by Arshid Ahmad Malik
-
----
-
 ## ⭐ Support
 
 If you find this project useful, give it a star
