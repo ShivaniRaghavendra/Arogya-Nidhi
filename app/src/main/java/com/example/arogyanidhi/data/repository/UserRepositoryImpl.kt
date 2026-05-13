@@ -14,7 +14,7 @@ class UserRepositoryImpl @Inject constructor() : UserRepository {
     
     override fun getUserProfile(uid: String): Flow<UserProfile?> = flow {
         // Return a dummy profile for now
-        val profile = _profiles[uid] ?: UserProfile(uid = uid, name = "Dummy User", email = "dummy@example.com")
+        val profile = _profiles[uid] ?: UserProfile(uid = uid, name = "Shivani", email = "dummy@example.com")
         emit(profile)
     }
 

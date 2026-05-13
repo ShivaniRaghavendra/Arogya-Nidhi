@@ -38,18 +38,29 @@ class EligibilityViewModel @Inject constructor() : ViewModel() {
 
     fun checkEligibility() {
         viewModelScope.launch {
-            // Decision Tree Logic
             val data = _eligibilityData.value
             val schemes = mutableListOf<Scheme>()
-            
-            if (data.income < 250000 || data.isBpl) {
-                schemes.add(Scheme(id = "1", name = "Ayushman Bharat", description = "Free health insurance up to 5 Lakhs"))
+
+            if (data.income < 250000 && data.isBpl) {
+                schemes.add(
+                    Scheme(
+                        id = "1",
+                        name = "Ayushman Bharat",
+                        description = "Free health insurance up to 5 Lakhs"
+                    )
+                )
             }
-            
-            if (data.occupation == "Farmer") {
-                schemes.add(Scheme(id = "2", name = "PM Kisan Maandhan Yojana", description = "Pension scheme for farmers"))
+
+            if (data.occupation.trim().lowercase() == "farmer") {
+                schemes.add(
+                    Scheme(
+                        id = "2",
+                        name = "PM Kisan Maandhan Yojana",
+                        description = "Pension scheme for farmers"
+                    )
+                )
             }
-            
+
             _eligibleSchemes.value = schemes
         }
     }

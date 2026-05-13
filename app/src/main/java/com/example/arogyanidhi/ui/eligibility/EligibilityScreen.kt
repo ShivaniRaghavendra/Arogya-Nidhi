@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
@@ -18,7 +19,9 @@ fun EligibilityScreen(
 ) {
     val eligibilityData by viewModel.eligibilityData.collectAsState()
     val eligibleSchemes by viewModel.eligibleSchemes.collectAsState()
+
     var currentStep by remember { mutableStateOf(0) }
+    var hasChecked by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -26,63 +29,166 @@ fun EligibilityScreen(
                 title = { Text("Eligibility Checker") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
                     }
                 }
             )
         }
     ) { padding ->
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .padding(16.dp)
         ) {
-            if (eligibleSchemes.isEmpty()) {
+
+            // Show form before eligibility check
+            if (!hasChecked) {
+
                 when (currentStep) {
+
                     0 -> {
-                        Text("Step 1: Financial Information", style = MaterialTheme.typography.titleLarge)
+                        Text(
+                            text = "Step 1: Financial Information",
+                            style = MaterialTheme.typography.titleLarge
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
                         OutlinedTextField(
-                            value = eligibilityData.income.toString(),
-                            onValueChange = { viewModel.updateIncome(it.toDoubleOrNull() ?: 0.0) },
+                            value = if (eligibilityData.income == 0.0) "" else eligibilityData.income.toString(),
+                            onValueChange = {
+                                viewModel.updateIncome(it.toDoubleOrNull() ?: 0.0)
+                            },
                             label = { Text("Annual Income") },
                             modifier = Modifier.fillMaxWidth()
                         )
-                        Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                            Checkbox(checked = eligibilityData.isBpl, onCheckedChange = { viewModel.updateBpl(it) })
-                            Text("BPL Status")
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Checkbox(
+                                checked = eligibilityData.isBpl,
+                                onCheckedChange = {
+                                    viewModel.updateBpl(it)
+                                }
+                            )
+                            Text(text = "BPL Status")
                         }
-                        Button(onClick = { currentStep = 1 }) { Text("Next") }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Button(
+                            onClick = {
+                                currentStep = 1
+                            }
+                        ) {
+                            Text("Next")
+                        }
                     }
+
                     1 -> {
-                        Text("Step 2: Professional Information", style = MaterialTheme.typography.titleLarge)
+                        Text(
+                            text = "Step 2: Professional Information",
+                            style = MaterialTheme.typography.titleLarge
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
                         OutlinedTextField(
                             value = eligibilityData.occupation,
-                            onValueChange = { viewModel.updateOccupation(it) },
+                            onValueChange = {
+                                viewModel.updateOccupation(it)
+                            },
                             label = { Text("Occupation") },
                             modifier = Modifier.fillMaxWidth()
                         )
-                        Button(onClick = { 
-                            viewModel.checkEligibility()
-                        }) { Text("Check Eligibility") }
-                    }
-                }
-            } else {
-                Text("Eligible Schemes", style = MaterialTheme.typography.titleLarge)
-                LazyColumn {
-                    items(eligibleSchemes) { scheme ->
-                        Card(modifier = Modifier.padding(vertical = 8.dp).fillMaxWidth()) {
-                            Column(modifier = Modifier.padding(16.dp)) {
-                                Text(text = scheme.name, style = MaterialTheme.typography.titleMedium)
-                                Text(text = scheme.description)
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Button(
+                            onClick = {
+                                hasChecked = true
+                                viewModel.checkEligibility()
                             }
+                        ) {
+                            Text("Check Eligibility")
                         }
                     }
                 }
-                Button(onClick = { 
-                    // Reset or go back
-                    onNavigateBack()
-                }) { Text("Finish") }
+
+            } else {
+
+                // If checked but no schemes found
+                if (eligibleSchemes.isEmpty()) {
+
+                    Text(
+                        text = "No eligible schemes found based on your details",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Button(
+                        onClick = {
+                            hasChecked = false
+                            currentStep = 0
+                        }
+                    ) {
+                        Text("Try Again")
+                    }
+
+                } else {
+
+                    // Show eligible schemes
+                    Text(
+                        text = "Eligible Schemes",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    LazyColumn {
+                        items(eligibleSchemes) { scheme ->
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp)
+                            ) {
+                                Column(
+                                    modifier = Modifier.padding(16.dp)
+                                ) {
+                                    Text(
+                                        text = scheme.name,
+                                        style = MaterialTheme.typography.titleMedium
+                                    )
+
+                                    Spacer(modifier = Modifier.height(8.dp))
+
+                                    Text(
+                                        text = scheme.description
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Button(
+                        onClick = {
+                            onNavigateBack()
+                        }
+                    ) {
+                        Text("Finish")
+                    }
+                }
             }
         }
     }
